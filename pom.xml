@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>pe.gob.indecopi</groupId>
+	<artifactId>appDSDRegMarcas</artifactId>
+	<version>1.0</version>
+	<packaging>war</packaging>
+	<name>FuentesRegistroMarcasBack</name>
+	<description>Proyecto de Registro de Marcas</description>
+
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.0.6.RELEASE</version>
+		<relativePath /> <!-- lookup parent from repository -->
+	</parent>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<java.version>1.8</java.version>
+		<maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
+		<indecopi.repo.url>http://des-jenrepo.indecopi.gob.pe</indecopi.repo.url>
+	</properties>
+
+	<developers>
+		<developer>
+			<id>tsalinas</id>
+			<name>Tito Salinas</name>
+			<email>tsalinas.indecopi@gmail.com</email>
+			<organization>INDECOPI</organization>
+		</developer>
+	</developers>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-tomcat</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>pe.gob.indecopi</groupId>
+			<artifactId>libComponentesSpring</artifactId>
+			<classifier>classes</classifier>
+			<version>1.1.0.0</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>pe.gob.indecopi</groupId>
+			<artifactId>libComponentesESAPI</artifactId>
+			<classifier>classes</classifier>
+			<version>1.0.0.0</version>
+			<scope>provided</scope>
+		</dependency>
+
+
+	</dependencies>
+
+	<build>
+		<finalName>${project.artifactId}</finalName>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+						<phase>none</phase>
+					</execution>
+				</executions>
+			</plugin>
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+					<version>3.0.0</version><!--$NO-MVN-MAN-VER$ -->
+				<configuration>
+					<failOnMissingWebXml>false</failOnMissingWebXml>
+					<archive>
+					<compress>true</compress>
+						<manifestEntries>
+							<!-- WebLogic-Application-Version>${project.version}.${buildNumber}_f${build.time}</WebLogic-Application-Version -->
+							<WebLogic-Application-Version>${project.version}.1_f${build.time}</WebLogic-Application-Version>
+							<Implementation-Build>${buildNumber}</Implementation-Build>
+							<SCM-Revision>${buildNumber}</SCM-Revision>
+						</manifestEntries>
+						<manifest>
+							<addDefaultImplementationEntries>false</addDefaultImplementationEntries>
+						</manifest>
+					</archive>
+					<packagingExcludes>WEB-INF/lib/tomcat-*.jar,WEB-INF/lib/jetty-*.jar,WEB-INF/lib/javax-websocket*.jar,WEB-INF/lib/websocket*.jar</packagingExcludes>
+				</configuration>
+			</plugin>
+
+			<!-- Plugin para firmar los artefactos -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jarsigner-plugin</artifactId>
+				<version>1.4</version>
+				<executions>
+					<execution>
+						<id>sign</id>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
+
+				<configuration>
+					<keystore>${indecopi.repo.url}/cert/indecopi</keystore>
+					<alias>indecopi</alias>
+					<storepass>${keystore.password}</storepass>
+					<keypass>${cert.password}</keypass>
+				</configuration>
+			</plugin>
+
+			<!-- plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>buildnumber-maven-plugin</artifactId>
+				<version>1.4</version>
+				<executions>
+				<execution>
+				<phase>validate</phase>
+				<goals>
+				<goal>create</goal>
+				</goals>
+				</execution>
+				</executions>
+				<configuration>
+				<doCheck>false</doCheck>
+				<doUpdate>false</doUpdate>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+			</plugin -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>timestamp-property</id>
+						<goals>
+							<goal>timestamp-property</goal>
+						</goals>
+						<configuration>
+							<name>build.time</name>
+							<pattern>${maven.build.timestamp.format}</pattern>
+							<locale>es_PE</locale>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+	<profiles>
+			<profile>
+			<id>local</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+				<property>
+					<name>local</name>
+					<value>local</value>
+				</property>
+			</activation>
+			<properties>
+				<LOG_LEVEL>DEBUG</LOG_LEVEL>
+				<RUTA_LOGS>D:\\\\apps\\logs\\appDSDRegMarcas\\</RUTA_LOGS>
+				<NOMBRE_LOGS>appDSDRegMarcas.log</NOMBRE_LOGS>
+				<CONSOLE_ENABLE>DEBUG</CONSOLE_ENABLE>
+				<ACTIVED_PROPERTIES>local</ACTIVED_PROPERTIES>
+			</properties>
+		</profile>
+		<profile>
+			<id>dev</id>
+			<activation>
+				<property>
+					<name>dev</name>
+					<value>dev</value>
+				</property>
+			</activation>
+			<properties>
+				<LOG_LEVEL>DEBUG</LOG_LEVEL>
+				<RUTA_LOGS>/apps/logs/appDSDRegMarcas/</RUTA_LOGS>
+				<NOMBRE_LOGS>appDSDRegMarcas</NOMBRE_LOGS>
+				<CONSOLE_ENABLE>DEBUG</CONSOLE_ENABLE>
+				<ACTIVED_PROPERTIES>dev</ACTIVED_PROPERTIES>
+			</properties>
+		</profile>
+		<profile>
+			<id>qa</id>
+			<activation>
+				<property>
+					<name>activatedProperties</name>
+					<value>qa</value>
+				</property>
+			</activation>
+			<properties>
+				<LOG_LEVEL>DEBUG</LOG_LEVEL>
+				<RUTA_LOGS>/apps/logs/appDSDRegMarcas/</RUTA_LOGS>
+				<NOMBRE_LOGS>appDSDRegMarcas</NOMBRE_LOGS>
+				<CONSOLE_ENABLE>DEBUG</CONSOLE_ENABLE>
+				<ACTIVED_PROPERTIES>qa</ACTIVED_PROPERTIES>
+			</properties>
+		</profile>
+		<profile>
+			<id>prd</id>
+			<activation>
+				<property>
+					<name>prd</name>
+					<value>prd</value>
+				</property>
+			</activation>
+			<properties>
+				<LOG_LEVEL>INFO</LOG_LEVEL>
+				<RUTA_LOGS>/apps/logs/appDSDRegMarcas/</RUTA_LOGS>
+				<NOMBRE_LOGS>appDSDRegMarcas</NOMBRE_LOGS>
+				<ACTIVED_PROPERTIES>prd</ACTIVED_PROPERTIES>
+				<CONSOLE_ENABLE>OFF</CONSOLE_ENABLE>
+			</properties>
+		</profile>
+	</profiles>
+
+	<!-- Repositorio de fuentes -->
+	<scm>
+		<connection>scm:svn:http://appfuentes.indecopi.gob.pe/svnRepo/dsdvirtual/Registro de marcas Back/</connection>
+		<url>http://appfuentes.indecopi.gob.pe/svnRepo/dsdvirtual/Registro de marcas Back</url>
+	</scm>
+
+	<!-- Repositorio de artefactos -->
+	<distributionManagement>
+		<repository>
+			<id>indecopi-nexus-repo</id>
+			<name>REPOSITORIO INDECOPI</name>
+			<url>${indecopi.repo.url}:8000/repositorio/repository/indecopi-repo/</url>
+		</repository>
+	</distributionManagement>
+
+
+</project>

@@ -1,0 +1,15 @@
+server:
+    servlet:
+      context-path: /appDSDRegMarcasApi
+      session:
+        timeout: 300
+
+spring: 
+  profiles:
+      active: 'local'
+  banner:    location: classpath:/conf/banner.txt
+      
+    
+logging:
+  config: classpath:logback.xml 
+    

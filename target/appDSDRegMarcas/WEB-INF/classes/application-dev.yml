@@ -1,0 +1,9 @@
+spring.datasource.usr_marcas.jndi-name: jdbc/JDBCappDSDRegMarcas
+spring.datasource.usr_sel.jndi-name: jdbc/JDBCappDSDTramiteSELApi
+ 
+   
+spring:
+  servlet:
+    multipart:
+      max-file-size: -1
+      max-request-size: -1

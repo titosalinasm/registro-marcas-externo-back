@@ -1,0 +1,35 @@
+<!-- Archivo de configuración de Logback -->
+<configuration>
+	<appender name="RDMV_CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+		<Target>System.out</Target>
+		<encoder>
+			<pattern>[%-5level] [%d{dd-MM-yyyy HH:mm:ss.SSS}] [%class{40}.%M:%L] - %msg%n</pattern>
+		</encoder>
+	</appender>
+	<appender name="RDMV_DAILYLOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>@RUTA_LOGS@@NOMBRE_LOGS@.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+	      <!-- daily rollover -->
+	      <fileNamePattern>@RUTA_LOGS@@NOMBRE_LOGS@_%d{yyyy-MM-dd}.log</fileNamePattern>
+		</rollingPolicy>
+		<encoder>
+			<pattern>[%-5level] [%d{dd-MM-yyyy HH:mm:ss.SSS}] [%class{40}.%M:%L] - %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<logger name="pe.gob.indecopi" level="@CONSOLE_ENABLE@">
+	  <appender-ref ref="RDMV_CONSOLE" />
+	</logger>
+	
+	<logger name="org.owasp.esapi" level="INFO">
+		<appender-ref ref="RDMV_CONSOLE" />
+		<appender-ref ref="RDMV_DAILYLOG" />
+	</logger>
+
+	<logger name="pe.gob.indecopi" additivity="false" level="@LOG_LEVEL@">
+		<appender-ref ref="RDMV_DAILYLOG" />
+	</logger>
+	
+
+	 
+</configuration>

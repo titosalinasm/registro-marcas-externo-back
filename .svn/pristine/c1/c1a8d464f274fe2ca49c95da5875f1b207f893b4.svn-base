@@ -1,0 +1,90 @@
+package pe.gob.indecopi.bean;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+public class ClsDatosSignoBean implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8862113753853618856L;
+	
+	private Integer nuIdTipoSolicitud;
+    private Integer nuFlagInteresReal;
+    private String vcNroExpediente;
+    private Integer nuFlaDerechoPreferente;
+    private String vcNroCertificado;
+    private Integer nuIdTipoSigno;
+    private String vcDenominacion;
+    private Integer nuFlagReinvindicaCol;
+    private List<ClsArchivoBean> lstArchivosSigno;
+    
+    public ClsDatosSignoBean() {
+    	this.setLstArchivosSigno(new ArrayList<ClsArchivoBean>());
+    }
+    
+    
+	public String getVcDenominacion() {
+		return vcDenominacion;
+	}
+
+
+	public void setVcDenominacion(String vcDenominacion) {
+		this.vcDenominacion = vcDenominacion;
+	}
+
+
+	public Integer getNuFlagReinvindicaCol() {
+		return nuFlagReinvindicaCol;
+	}
+	public void setNuFlagReinvindicaCol(Integer nuFlagReinvindicaCol) {
+		this.nuFlagReinvindicaCol = nuFlagReinvindicaCol;
+	}
+	public List<ClsArchivoBean> getLstArchivosSigno() {
+		return lstArchivosSigno;
+	}
+	public void setLstArchivosSigno(List<ClsArchivoBean> lstArchivosSigno) {
+		this.lstArchivosSigno = lstArchivosSigno;
+	}
+	public Integer getNuIdTipoSolicitud() {
+		return nuIdTipoSolicitud;
+	}
+	public void setNuIdTipoSolicitud(Integer nuIdTipoSolicitud) {
+		this.nuIdTipoSolicitud = nuIdTipoSolicitud;
+	}
+	public Integer getNuFlagInteresReal() {
+		return nuFlagInteresReal;
+	}
+	public void setNuFlagInteresReal(Integer nuFlagInteresReal) {
+		this.nuFlagInteresReal = nuFlagInteresReal;
+	}
+	public String getVcNroExpediente() {
+		return vcNroExpediente;
+	}
+	public void setVcNroExpediente(String vcNroExpediente) {
+		this.vcNroExpediente = vcNroExpediente;
+	}
+	public Integer getNuFlaDerechoPreferente() {
+		return nuFlaDerechoPreferente;
+	}
+	public void setNuFlaDerechoPreferente(Integer nuFlaDerechoPreferente) {
+		this.nuFlaDerechoPreferente = nuFlaDerechoPreferente;
+	}
+	public String getVcNroCertificado() {
+		return vcNroCertificado;
+	}
+	public void setVcNroCertificado(String vcNroCertificado) {
+		this.vcNroCertificado = vcNroCertificado;
+	}
+	public Integer getNuIdTipoSigno() {
+		return nuIdTipoSigno;
+	}
+	public void setNuIdTipoSigno(Integer nuIdTipoSigno) {
+		this.nuIdTipoSigno = nuIdTipoSigno;
+	}
+
+    
+	
+}
